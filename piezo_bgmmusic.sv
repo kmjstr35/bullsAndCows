@@ -152,6 +152,7 @@ parameter note narco[279:0] = {'{A5, 0, 400000}, '{PAUSE, 400001, 479999}, '{C5,
 
 
 
+
 module PIEZO_BGMUSIC (
     clk,
     dipswitch_two,
@@ -179,7 +180,7 @@ module PIEZO_BGMUSIC (
 
     input wire clk;
     input wire dipswitch_two;
-    input wire music_idx;
+    input int music_idx;
 
     output reg piezo;
 
@@ -190,7 +191,7 @@ module PIEZO_BGMUSIC (
 
     always @(posedge clk) begin
         if (dipswitch_two == 1'b1) begin
-            if (music_idx == 2'b00) begin
+            if (music_idx == 0) begin
 
                 if (cur_start <= cnt_piezo && cnt_piezo <= cur_last) begin
                     if (cur_tone == PAUSE) begin
@@ -216,10 +217,10 @@ module PIEZO_BGMUSIC (
                 end
 
                 else begin
-                    note_idx <= (note_idx + 1);
-                    cur_tone <= ballgame[note_idx].tone;
-                    cur_start <= ballgame[note_idx].sstart;
-                    cur_last <= ballgame[note_idx].llast;
+                    note_idx = (note_idx + 1);
+                    cur_tone = ballgame[note_idx].tone;
+                    cur_start = ballgame[note_idx].sstart;
+                    cur_last = ballgame[note_idx].llast;
                 end
                 
                 cnt_piezo = cnt_piezo + 1;
@@ -251,7 +252,7 @@ module PIEZO_BGMUSIC (
 
             end
 
-            else if (music_idx == 2) begin
+            else if (music_idx == 2) begin // 
                 if (cur_start <= cnt_piezo_three && cnt_piezo_three <= cur_last) begin
 
                     if (cur_tone == PAUSE) begin
@@ -285,6 +286,7 @@ module PIEZO_BGMUSIC (
             cur_tone = ballgame[0].tone;
             cur_start = ballgame[0].sstart;
             cur_last = ballgame[0].llast;
+            cnt_piezo_three = 0;
             cnt_piezo_two = 0;
             cnt_piezo = 0;
         end
