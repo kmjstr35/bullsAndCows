@@ -179,7 +179,7 @@ always @(posedge clk) begin
                                         ((inputs[2] == gen[2]) ? 2'b01 : 2'b00);
 
                                 ball_count   <= ((inputs[0] == gen[1] || inputs[0] == gen[2]) ? 2'b01 : 2'b00) +
-                                        ((inputs[1] == gen || inputs[1] == gen[2]) ? 2'b01 : 2'b00) +
+                                        ((inputs[1] == gen[0] || inputs[1] == gen[2]) ? 2'b01 : 2'b00) +
                                         ((inputs[2] == gen[0] || inputs[2] == gen[1]) ? 2'b01 : 2'b00);
 
                         
@@ -324,6 +324,7 @@ always @(posedge clk) begin
                         strike_count <= '{0, 0};
                         full_color_red_led <= 4'b0000;
                         full_color_greed_led <= 4'b0000;
+                        success_cnt <= 0;
                     end
                 
                 end
@@ -331,7 +332,7 @@ always @(posedge clk) begin
 
             else begin // cnt >= 10
                 // music_idx <= 1;
-                if (over_cnt_lose < (5 * sec)) begin
+                if (over_cnt_lose < (22319121)) begin
                     music_idx <= 1;
                     full_color_red_led <= 4'b1111;
 
