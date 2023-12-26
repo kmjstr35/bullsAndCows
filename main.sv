@@ -66,7 +66,7 @@ initial begin
   seed_inputs  <= '{'{0,0,0,0}, '{0,0,0,0}, '{0,0,0,0}, '{0,0,0,0}};
   tmp_input <= '{0,0,0,0};
   gen          <= '{'{0,1,0,0}, '{0,0,1,0}, '{0,0,0,1}};// 4 2 1\
-   state <= 16'b0000000000000000;
+  state <= 16'b0000000000000000;
   ball_count   <= '{0, 0};
   strike_count <= '{0, 0};
   finish <= 0;
@@ -414,10 +414,10 @@ always @(posedge clk) begin
             isSeedSettingFin <= 4'b0000;
 //            seed_input_flag <= 0;
             state <= 16'b0000000000000000;
-            gen <= 12'b000000000000;
+            gen <= '{'{0,1,0,0}, '{0,0,1,0}, '{0,0,0,1}};
 
             full_color_greed_led <= 4'b0000;
-            full_color_red_led <= 4'b0000;
+            // full_color_red_led <= 4'b1111;
 
         end
     end
@@ -443,7 +443,7 @@ else begin // seed 설정
                 seed_inputs[0] <= tmp_input;
                 
                 isSeedSettingFin[0] <= 1'b1;
-                seed_input_flag = 1;
+                seed_input_flag = 1'b1;
             end
             else if ((seed_inputs[1] == 4'b0000)) begin
                 seed_inputs[1] <= tmp_input;
@@ -469,7 +469,7 @@ else begin // seed 설정
         if (seed_inputs[0] != 4'b0000 && seed_inputs[1] != 4'b0000 && seed_inputs[2] != 4'b0000 && seed_inputs[3] != 4'b0000) begin // 다 채워졌을때 
 
             if (state == 16'b0000000000000000) begin
-                state <= seed_inputs;
+                state = seed_inputs;
             end
 
             else begin
@@ -497,9 +497,9 @@ else begin // seed 설정
                     end
                 end
 
-            isSeedSettingFin = 4'b1111;
-            seed_inputs <= '{'{0,0,0,0}, '{0,0,0,0}, '{0,0,0,0}, '{0,0,0,0}};
-            tmp_input <= '{0,0,0,0};
+            // isSeedSettingFin = 4'b1111;
+            seed_inputs = '{'{0,0,0,0}, '{0,0,0,0}, '{0,0,0,0}, '{0,0,0,0}};
+            tmp_input = '{0,0,0,0};
 
             end
         end
